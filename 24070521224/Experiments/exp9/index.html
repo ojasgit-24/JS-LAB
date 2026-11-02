@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --surface-color: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --accent-color: #60a5fa;
+            --accent-hover: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .container {
+            background-color: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 440px;
+            transition: var(--transition);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .prn-display {
+            display: inline-block;
+            font-size: 1.125rem;
+            /* Medium font size */
+            font-weight: 500;
+            color: var(--text-secondary);
+            background-color: var(--bg-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 2rem 0;
+            transition: var(--transition);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .label {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .sub-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modern Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:checked+.slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-local {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .btn-local:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-session {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-session:hover {
+            background-color: var(--border-color);
+        }
+
+        .status-message {
+            margin-top: 1.5rem;
+            padding: 0.875rem;
+            border-radius: 12px;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+            padding-top: 0.875rem;
+            padding-bottom: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Dashboard Settings</h1>
+            <div class="prn-display">PRN:24070521224</div>
+        </div>
+
+        <!-- Theme Controls -->
+        <div class="control-group">
+            <div class="label-container">
+                <span class="label">Dark Appearance</span>
+                <span class="sub-label">Use buttons below to save preference</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- Save Theme Controls -->
+        <div class="btn-group" style="margin-top: 1.5rem;">
+            <button id="btnSaveLocal" class="btn btn-local">Save to Local</button>
+            <button id="btnSaveSession" class="btn btn-session">Save to Session</button>
+        </div>
+
+        <div id="statusMessage" class="status-message">
+            Settings updated successfully
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('themeToggle');
+            const btnSaveLocal = document.getElementById('btnSaveLocal');
+            const btnSaveSession = document.getElementById('btnSaveSession');
+            const statusMessage = document.getElementById('statusMessage');
+
+            let statusTimeout;
+
+            // Utility to show feedback to the user
+            const showStatus = (msg) => {
+                statusMessage.textContent = msg;
+                statusMessage.classList.add('show');
+                clearTimeout(statusTimeout);
+                statusTimeout = setTimeout(() => {
+                    statusMessage.classList.remove('show');
+                }, 2500);
+            };
+
+            // ==========================================
+            // Theme Loading Logic (Prioritize Session over Local)
+            // ==========================================
+            const sessionTheme = sessionStorage.getItem('theme');
+            const localTheme = localStorage.getItem('theme');
+            const activeTheme = sessionTheme || localTheme;
+
+            if (activeTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.checked = true;
+            }
+
+            // Toggle theme visually without auto-saving
+            themeToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+            });
+
+            // ==========================================
+            // Save Theme Preference Logic
+            // ==========================================
+
+            btnSaveLocal.addEventListener('click', () => {
+                const currentTheme = themeToggle.checked ? 'dark' : 'light';
+                localStorage.setItem('theme', currentTheme);
+                showStatus('Theme saved to localStorage');
+            });
+
+            btnSaveSession.addEventListener('click', () => {
+                const currentTheme = themeToggle.checked ? 'dark' : 'light';
+                sessionStorage.setItem('theme', currentTheme);
+                showStatus('Theme saved to sessionStorage');
+            });
+        });
+    </script>
+</body>
+
+</html>

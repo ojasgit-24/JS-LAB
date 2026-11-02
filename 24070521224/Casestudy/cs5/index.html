@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays & Loops in JavaScript</title>
+    <style>
+        body {
+            font-family: monospace;
+            color: black;
+            background-color: white;
+            margin: 2rem;
+            line-height: 1.5;
+        }
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .identity-badge {
+            text-align: right;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        .page-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid black;
+            padding-bottom: 1rem;
+        }
+        h1, h2, h3 { margin: 0 0 10px 0; }
+        .section-card {
+            border: 1px solid black;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-header { margin-bottom: 1rem; border-bottom: 1px solid black; padding-bottom: 1rem; }
+        .array-visual, .cs-array-visual {
+            border: 1px dashed black;
+            padding: 1rem;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-height: 40px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        .arr-item {
+            border: 1px solid black;
+            padding: 10px;
+            min-width: 30px;
+            text-align: center;
+        }
+        .highlight-new { background-color: #ddd; font-weight: bold; }
+        .highlight-slice { background-color: #eee; font-style: italic; }
+        .controls-grid, .method-grid, .cs-result-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .ctrl-btn, .run-btn {
+            border: 1px solid black;
+            background: white;
+            color: black;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+        .ctrl-btn:hover, .run-btn:hover { background: #f0f0f0; }
+        .console-box, .method-output {
+            border: 1px solid black;
+            background: #fafafa;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .console-header { border-bottom: 1px solid black; padding-bottom: 5px; margin-bottom: 10px; font-weight: bold; }
+        .console-line { margin: 0 0 5px 0; }
+        .method-card { border: 1px dashed black; padding: 1rem; flex: 1; min-width: 200px; }
+        .cs-result-card { border: 1px solid black; padding: 1rem; text-align: center; flex: 1; }
+        .cs-value { font-size: 2rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="identity-badge" id="identity-badge">
+            <span class="prn">PRN: 24070521224</span>
+        </div>
+
+        <header class="page-header">
+            <h1 id="page-title">Arrays &amp; Loops</h1>
+            <p>To study the functioning of Arrays and Loops in JavaScript</p>
+        </header>
+
+        <section class="section-card" id="section-manipulation">
+            <div class="section-header">
+                <h2>(a) Array Manipulation</h2>
+                <p>Create and manipulate arrays: push, pop, shift, unshift, splice, slice</p>
+            </div>
+
+            <div class="array-display-wrapper">
+                <label>Current Array:</label>
+                <div class="array-visual" id="array-visual"></div>
+            </div>
+
+            <div class="controls-grid">
+                <button class="ctrl-btn push" id="btn-push">push()</button>
+                <button class="ctrl-btn pop" id="btn-pop">pop()</button>
+                <button class="ctrl-btn unshift" id="btn-unshift">unshift()</button>
+                <button class="ctrl-btn shift" id="btn-shift">shift()</button>
+                <button class="ctrl-btn splice" id="btn-splice">splice()</button>
+                <button class="ctrl-btn slice" id="btn-slice">slice()</button>
+                <button class="ctrl-btn reset" id="btn-reset">Reset</button>
+            </div>
+
+            <div class="console-box">
+                <div class="console-header">Console Output</div>
+                <div class="console-body" id="console-a">
+                    <p class="console-line">// Click any method above to see the output here</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card" id="section-methods">
+            <div class="section-header">
+                <h2>(b) Array Methods</h2>
+                <p>Use array methods: map(), filter(), reduce(), forEach()</p>
+            </div>
+
+            <div class="method-grid">
+                <div class="method-card" id="method-foreach">
+                    <h3>forEach()</h3>
+                    <button class="run-btn" id="btn-foreach">Run</button>
+                    <pre class="method-output" id="out-foreach"></pre>
+                </div>
+                <div class="method-card" id="method-map">
+                    <h3>map()</h3>
+                    <button class="run-btn" id="btn-map">Run</button>
+                    <pre class="method-output" id="out-map"></pre>
+                </div>
+                <div class="method-card" id="method-filter">
+                    <h3>filter()</h3>
+                    <button class="run-btn" id="btn-filter">Run</button>
+                    <pre class="method-output" id="out-filter"></pre>
+                </div>
+                <div class="method-card" id="method-reduce">
+                    <h3>reduce()</h3>
+                    <button class="run-btn" id="btn-reduce">Run</button>
+                    <pre class="method-output" id="out-reduce"></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card" id="section-case-study">
+            <div class="section-header">
+                <h2>Case Study</h2>
+                <p>Create an array of numbers and find the maximum and minimum value.</p>
+            </div>
+
+            <div class="case-study-body">
+                <div class="cs-array-row">
+                    <label>Array:</label>
+                    <div class="cs-array-visual" id="cs-array-visual"></div>
+                </div>
+
+                <button class="run-btn run-case" id="btn-run-case">Find Max & Min</button>
+
+                <div class="cs-result-grid" id="cs-results" style="display:none;">
+                    <div class="cs-result-card max">
+                        <span class="cs-label">Maximum Value:</span>
+                        <div class="cs-value" id="cs-max">—</div>
+                    </div>
+                    <div class="cs-result-card min">
+                        <span class="cs-label">Minimum Value:</span>
+                        <div class="cs-value" id="cs-min">—</div>
+                    </div>
+                </div>
+
+                <div class="console-box cs-console">
+                    <div class="console-header">Output</div>
+                    <div class="console-body" id="console-cs">
+                        <p class="console-line">// Click "Find Max & Min" to see the result</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const INITIAL_ARRAY = [25, 10, 45, 5, 30, 15];
+        let arr = [...INITIAL_ARRAY];
+        const CS_ARRAY = [25, 10, 45, 5, 30, 15];
+
+        const arrayVisual = document.getElementById('array-visual');
+        const consoleA    = document.getElementById('console-a');
+        const csArrayVisual = document.getElementById('cs-array-visual');
+        const consoleCS     = document.getElementById('console-cs');
+        const csResults     = document.getElementById('cs-results');
+        const csMaxEl       = document.getElementById('cs-max');
+        const csMinEl       = document.getElementById('cs-min');
+
+        function renderArray(container, data, highlightIndices = [], highlightClass = '') {
+            container.innerHTML = '';
+            if (data.length === 0) {
+                container.innerHTML = '<span>[ empty ]</span>';
+                return;
+            }
+            data.forEach((val, i) => {
+                const el = document.createElement('span');
+                el.className = 'arr-item';
+                if (highlightIndices.includes(i) && highlightClass) {
+                    el.classList.add(highlightClass);
+                }
+                el.textContent = val;
+                container.appendChild(el);
+            });
+        }
+
+        function logToConsole(target, message) {
+            const p = document.createElement('p');
+            p.className = `console-line`;
+            p.textContent = message;
+            target.appendChild(p);
+            target.scrollTop = target.scrollHeight;
+        }
+
+        function clearConsole(target) {
+            target.innerHTML = '';
+        }
+
+        renderArray(arrayVisual, arr);
+        renderArray(csArrayVisual, CS_ARRAY);
+
+        document.getElementById('btn-push').addEventListener('click', () => {
+            const val = Math.floor(Math.random() * 50) + 1;
+            clearConsole(consoleA);
+            logToConsole(consoleA, `// push(${val})`);
+            logToConsole(consoleA, `Before: [${arr.join(', ')}]`);
+            arr.push(val);
+            logToConsole(consoleA, `After:  [${arr.join(', ')}]`);
+            logToConsole(consoleA, `→ Added ${val} to the end.`);
+            renderArray(arrayVisual, arr, [arr.length - 1], 'highlight-new');
+        });
+
+        document.getElementById('btn-pop').addEventListener('click', () => {
+            clearConsole(consoleA);
+            if (arr.length === 0) return;
+            logToConsole(consoleA, '// pop()');
+            logToConsole(consoleA, `Before: [${arr.join(', ')}]`);
+            const removed = arr.pop();
+            logToConsole(consoleA, `After:  [${arr.join(', ')}]`);
+            logToConsole(consoleA, `→ Removed ${removed} from the end.`);
+            renderArray(arrayVisual, arr);
+        });
+
+        document.getElementById('btn-unshift').addEventListener('click', () => {
+            const val = Math.floor(Math.random() * 50) + 1;
+            clearConsole(consoleA);
+            logToConsole(consoleA, `// unshift(${val})`);
+            logToConsole(consoleA, `Before: [${arr.join(', ')}]`);
+            arr.unshift(val);
+            logToConsole(consoleA, `After:  [${arr.join(', ')}]`);
+            logToConsole(consoleA, `→ Added ${val} to the beginning.`);
+            renderArray(arrayVisual, arr, [0], 'highlight-new');
+        });
+
+        document.getElementById('btn-shift').addEventListener('click', () => {
+            clearConsole(consoleA);
+            if (arr.length === 0) return;
+            logToConsole(consoleA, '// shift()');
+            logToConsole(consoleA, `Before: [${arr.join(', ')}]`);
+            const removed = arr.shift();
+            logToConsole(consoleA, `After:  [${arr.join(', ')}]`);
+            logToConsole(consoleA, `→ Removed ${removed} from the beginning.`);
+            renderArray(arrayVisual, arr);
+        });
+
+        document.getElementById('btn-splice').addEventListener('click', () => {
+            clearConsole(consoleA);
+            if (arr.length < 2) return;
+            const startIdx = 1;
+            const deleteCount = 1;
+            const insertVal = Math.floor(Math.random() * 50) + 1;
+            logToConsole(consoleA, `// splice(${startIdx}, ${deleteCount}, ${insertVal})`);
+            logToConsole(consoleA, `Before: [${arr.join(', ')}]`);
+            const spliced = arr.splice(startIdx, deleteCount, insertVal);
+            logToConsole(consoleA, `After:  [${arr.join(', ')}]`);
+            logToConsole(consoleA, `→ Removed [${spliced.join(', ')}] at index ${startIdx}, inserted ${insertVal}.`);
+            renderArray(arrayVisual, arr, [startIdx], 'highlight-new');
+        });
+
+        document.getElementById('btn-slice').addEventListener('click', () => {
+            clearConsole(consoleA);
+            if (arr.length < 3) return;
+            const start = 1;
+            const end = 4;
+            logToConsole(consoleA, `// slice(${start}, ${end})`);
+            logToConsole(consoleA, `Original: [${arr.join(', ')}]`);
+            const sliced = arr.slice(start, Math.min(end, arr.length));
+            logToConsole(consoleA, `Sliced:   [${sliced.join(', ')}]`);
+            logToConsole(consoleA, `→ Extracted elements (original unchanged).`);
+            const indices = [];
+            for (let i = start; i < Math.min(end, arr.length); i++) indices.push(i);
+            renderArray(arrayVisual, arr, indices, 'highlight-slice');
+        });
+
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            arr = [...INITIAL_ARRAY];
+            clearConsole(consoleA);
+            logToConsole(consoleA, '↺ Array reset to initial values.');
+            renderArray(arrayVisual, arr);
+        });
+
+        const methodArr = [25, 10, 45, 5, 30, 15];
+
+        document.getElementById('btn-foreach').addEventListener('click', () => {
+            const out = document.getElementById('out-foreach');
+            let lines = [];
+            lines.push(`Array: [${methodArr.join(', ')}]\n`);
+            methodArr.forEach((val, idx) => lines.push(`Index ${idx} → ${val}`));
+            out.textContent = lines.join('\n');
+        });
+
+        document.getElementById('btn-map').addEventListener('click', () => {
+            const out = document.getElementById('out-map');
+            const doubled = methodArr.map(val => val * 2);
+            out.textContent = `Original: [${methodArr.join(', ')}]\nDoubled:  [${doubled.join(', ')}]`;
+        });
+
+        document.getElementById('btn-filter').addEventListener('click', () => {
+            const out = document.getElementById('out-filter');
+            const filtered = methodArr.filter(val => val > 15);
+            out.textContent = `Original: [${methodArr.join(', ')}]\nfilter(x => x > 15)\nResult:   [${filtered.join(', ')}]`;
+        });
+
+        document.getElementById('btn-reduce').addEventListener('click', () => {
+            const out = document.getElementById('out-reduce');
+            const sum = methodArr.reduce((acc, val) => acc + val, 0);
+            out.textContent = `Array: [${methodArr.join(', ')}]\nreduce((acc, val) => acc + val, 0)\nSum = ${sum}`;
+        });
+
+        document.getElementById('btn-run-case').addEventListener('click', () => {
+            const numbers = CS_ARRAY;
+            const maxVal = numbers.reduce((max, val) => val > max ? val : max, numbers[0]);
+            const minVal = numbers.reduce((min, val) => val < min ? val : min, numbers[0]);
+
+            csResults.style.display = 'flex';
+            csMaxEl.textContent = maxVal;
+            csMinEl.textContent = minVal;
+
+            const maxIdx = numbers.indexOf(maxVal);
+            const minIdx = numbers.indexOf(minVal);
+            csArrayVisual.innerHTML = '';
+            numbers.forEach((val, i) => {
+                const el = document.createElement('span');
+                el.className = 'arr-item';
+                if (i === maxIdx) {
+                    el.style.backgroundColor = '#ddd';
+                    el.style.fontWeight = 'bold';
+                } else if (i === minIdx) {
+                    el.style.backgroundColor = '#f0f0f0';
+                    el.style.fontWeight = 'bold';
+                    el.style.borderStyle = 'dashed';
+                }
+                el.textContent = val;
+                csArrayVisual.appendChild(el);
+            });
+
+            clearConsole(consoleCS);
+            logToConsole(consoleCS, `Array: [${numbers.join(', ')}]`);
+            logToConsole(consoleCS, `Maximum Value: ${maxVal}  Minimum Value: ${minVal}`);
+        });
+    </script>
+</body>
+</html>

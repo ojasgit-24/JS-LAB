@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Fetcher</title>
+    <!-- Include Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-hover: #2563eb;
+            --border-light: #e2e8f0;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-area {
+            padding: 30px 40px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background-color: #fff;
+        }
+
+        .title-group h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .title-group p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Medium font display for PRN */
+        .prn-badge {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+            background-color: #eff6ff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .actions-area {
+            padding: 20px 40px;
+            background: #f8fafc;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--border-light);
+        }
+
+        .table-container {
+            padding: 0 40px 40px 40px;
+            overflow-x: auto;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--surface-color);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 16px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background-color 0.15s;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .email-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .error-message {
+            color: #ef4444;
+            background: #fee2e2;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            margin: 20px 40px 0 40px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid var(--accent-primary);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <div class="header-area">
+            <div class="title-group">
+                <h1>Network Request </h1>
+                <p>Retrieving external JSON placeholder data</p>
+            </div>
+            <!-- PRN visible in medium font -->
+            <div class="prn-badge">
+                PRN:24070521224
+            </div>
+        </div>
+
+        <div class="actions-area">
+            <button id="btnFetch" class="btn-primary">
+                <span class="loader" id="loaderFetch"></span>
+                Load with Fetch API
+            </button>
+            <button id="btnJquery" class="btn-primary" style="background-color: #10b981;">
+                <span class="loader" id="loaderJquery"></span>
+                Load with jQuery $.getJSON
+            </button>
+            <button id="btnClear" class="btn-outline">Clear Data</button>
+        </div>
+
+        <div id="errorBox" class="error-message"></div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <tr>
+                        <td colspan="4">
+                            <div class="status-message">
+                                No data loaded yet. Use the buttons above to fetch users.
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Use a public dummy JSON API
+        const API_URL = 'https://jsonplaceholder.typicode.com/users';
+
+        // DOM Elements
+        const dataTableBody = document.getElementById('dataTableBody');
+        const errorBox = document.getElementById('errorBox');
+
+        // Render data rows
+        function renderData(users) {
+            dataTableBody.innerHTML = ''; // clear
+
+            if (!users || users.length === 0) {
+                dataTableBody.innerHTML = `<tr><td colspan="4"><div class="status-message">No users found.</div></td></tr>`;
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 500; color: #64748b;">#${user.id}</td>
+                    <td style="font-weight: 500;">${user.name}</td>
+                    <td>@${user.username}</td>
+                    <td><a href="mailto:${user.email}" class="email-link">${user.email.toLowerCase()}</a></td>
+                `;
+                fragment.appendChild(tr);
+            });
+            dataTableBody.appendChild(fragment);
+        }
+
+        // Show/Hide Helpers
+        function setUIState(isLoading, method) {
+            errorBox.style.display = 'none';
+            if (method === 'fetch') {
+                document.getElementById('loaderFetch').style.display = isLoading ? 'inline-block' : 'none';
+            } else if (method === 'jquery') {
+                document.getElementById('loaderJquery').style.display = isLoading ? 'inline-block' : 'none';
+            }
+
+            if (isLoading) {
+                dataTableBody.innerHTML = `<tr><td colspan="4"><div class="status-message">Fetching data from server...</div></td></tr>`;
+            }
+        }
+
+        function showError(msg) {
+            errorBox.textContent = msg;
+            errorBox.style.display = 'block';
+            dataTableBody.innerHTML = `<tr><td colspan="4"><div class="status-message" style="color: #ef4444;">Operation failed.</div></td></tr>`;
+        }
+
+        // Method 1: Vanilla JavaScript Fetch API
+        document.getElementById('btnFetch').addEventListener('click', () => {
+            setUIState(true, 'fetch');
+
+            fetch(API_URL)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    setUIState(false, 'fetch');
+                    renderData(data);
+                })
+                .catch(err => {
+                    setUIState(false, 'fetch');
+                    showError('Fetch API Error: ' + err.message);
+                });
+        });
+
+        // Method 2: jQuery $.getJSON()
+        $('#btnJquery').on('click', function () {
+            setUIState(true, 'jquery');
+
+            $.getJSON(API_URL)
+                .done(function (data) {
+                    setUIState(false, 'jquery');
+                    renderData(data);
+                })
+                .fail(function (jqxhr, textStatus, error) {
+                    setUIState(false, 'jquery');
+                    showError('jQuery Error: ' + textStatus + ', ' + error);
+                });
+        });
+
+        // Clear button
+        document.getElementById('btnClear').addEventListener('click', () => {
+            errorBox.style.display = 'none';
+            dataTableBody.innerHTML = `<tr><td colspan="4"><div class="status-message">No data loaded yet. Use the buttons above to fetch users.</div></td></tr>`;
+        });
+    </script>
+</body>
+
+</html>

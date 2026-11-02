@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Assignment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f9;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        .prn {
+            font-size: 16px;
+            /* medium font */
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #444;
+        }
+
+        .add-task-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .add-task-section input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .add-task-section button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-left: none;
+            background-color: #e9e9ed;
+            cursor: pointer;
+        }
+
+        .add-task-section button:hover {
+            background-color: #d1d1d1;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .task-content {
+            flex: 1;
+            margin-left: 10px;
+            margin-right: 10px;
+            word-break: break-all;
+        }
+
+        .completed .task-content {
+            text-decoration: line-through;
+            color: #888888;
+        }
+
+        .action-btns button {
+            margin-left: 5px;
+            padding: 5px 8px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            background-color: #fafafa;
+            cursor: pointer;
+        }
+
+        .action-btns button:hover {
+            background-color: #ebebeb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <div class="prn">PRN:24070521224</div>
+
+        <h2>My Tasks</h2>
+
+        <div class="add-task-section">
+            <input type="text" id="taskInput" placeholder="Enter a new task...">
+            <button id="addBtn">Add Task</button>
+        </div>
+
+        <ul id="taskList">
+            <!-- Tasks will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script>
+        // DOM Selection
+        var taskInput = document.getElementById('taskInput');
+        var addBtn = document.getElementById('addBtn');
+        var taskList = document.getElementById('taskList');
+
+        // Add task on button click
+        addBtn.addEventListener('click', function () {
+            var text = taskInput.value.trim();
+            if (text !== "") {
+                createTaskElement(text);
+                taskInput.value = ""; // Clear input
+            } else {
+                alert("Please enter a task.");
+            }
+        });
+
+        // Function to create a new task item and add it to the DOM
+        function createTaskElement(taskText) {
+            // Create <li> element
+            var li = document.createElement('li');
+
+            // Create checkbox for completion status
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.addEventListener('change', function (event) {
+                // DOM Traversal to find parent list item and toggle class
+                var parentLi = event.target.parentElement;
+                if (event.target.checked) {
+                    parentLi.classList.add('completed');
+                } else {
+                    parentLi.classList.remove('completed');
+                }
+            });
+
+            // Create span to hold the task text
+            var span = document.createElement('span');
+            span.className = 'task-content';
+            span.innerText = taskText;
+
+            // Create container for action buttons
+            var actionDiv = document.createElement('div');
+            actionDiv.className = 'action-btns';
+
+            // Create Edit button
+            var editBtn = document.createElement('button');
+            editBtn.innerText = 'Edit';
+            editBtn.addEventListener('click', function (event) {
+                // DOM Traversal to find the task text element
+                var currentTaskItem = event.target.parentElement.parentElement;
+                var textElement = currentTaskItem.querySelector('.task-content');
+
+                var newText = prompt("Edit your task:", textElement.innerText);
+                if (newText !== null && newText.trim() !== "") {
+                    // DOM Update
+                    textElement.innerText = newText.trim();
+                }
+            });
+
+            // Create Delete button
+            var deleteBtn = document.createElement('button');
+            deleteBtn.innerText = 'Delete';
+            deleteBtn.addEventListener('click', function (event) {
+                // DOM Traversal to find the parent <li> and remove it from the <ul>
+                var currentTaskItem = event.target.parentElement.parentElement;
+                taskList.removeChild(currentTaskItem);
+            });
+
+            // Append buttons to the action div
+            actionDiv.appendChild(editBtn);
+            actionDiv.appendChild(deleteBtn);
+
+            // Append everything to the <li>
+            li.appendChild(checkbox);
+            li.appendChild(span);
+            li.appendChild(actionDiv);
+
+            // Append the <li> to the <ul>
+            taskList.appendChild(li);
+        }
+    </script>
+
+</body>
+
+</html>

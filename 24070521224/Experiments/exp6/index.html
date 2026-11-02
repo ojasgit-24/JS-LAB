@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>String Functions & Regex</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        .prn {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input,
+        textarea {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 300px;
+        }
+
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 10px;
+            color: #333;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="prn">PRN:24070521224</div>
+
+    <h2>Text Processing</h2>
+
+    <div class="section">
+        <h3>1. Email Validation</h3>
+        <input type="text" id="emailInput" placeholder="Enter email address">
+        <br>
+        <button onclick="validateEmail()">Validate</button>
+        <div id="emailResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h3>2. Data Extraction (Extract Numbers)</h3>
+        <input type="text" id="extractInput" placeholder="Enter text with numbers">
+        <br>
+        <button onclick="extractData()">Extract</button>
+        <div id="extractResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h3>3. Text Analysis (Word Count & Uppercase)</h3>
+        <textarea id="textInput" rows="3" placeholder="Enter some text"></textarea>
+        <br>
+        <button onclick="analyzeText()">Analyze</button>
+        <div id="analysisResult" class="result"></div>
+    </div>
+
+    <script>
+        // 1. Email Validation using Regex
+        function validateEmail() {
+            const email = document.getElementById('emailInput').value;
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValid = regex.test(email);
+            const resultDiv = document.getElementById('emailResult');
+
+            if (isValid) {
+                resultDiv.innerHTML = "Valid email address.";
+                resultDiv.style.color = "green";
+            } else {
+                resultDiv.innerHTML = "Invalid email address.";
+                resultDiv.style.color = "red";
+            }
+        }
+
+        // 2. Data Extraction using Regex
+        function extractData() {
+            const text = document.getElementById('extractInput').value;
+            const regex = /\d+/g;
+            const numbers = text.match(regex);
+
+            if (numbers) {
+                document.getElementById('extractResult').innerHTML = "Extracted numbers: " + numbers.join(", ");
+            } else {
+                document.getElementById('extractResult').innerHTML = "No numbers found.";
+            }
+        }
+
+        // 3. Text Analysis using String Functions
+        function analyzeText() {
+            const text = document.getElementById('textInput').value;
+
+            // Trim whitespace
+            const trimmed = text.trim();
+
+            // Word count
+            const words = trimmed ? trimmed.split(/\s+/) : [];
+            const wordCount = words.length;
+
+            // Uppercase
+            const upperText = trimmed.toUpperCase();
+
+            document.getElementById('analysisResult').innerHTML =
+                "Word Count: " + wordCount + "<br>" +
+                "Uppercase: " + upperText;
+        }
+    </script>
+</body>
+
+</html>

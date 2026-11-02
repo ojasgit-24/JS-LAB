@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Admission Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --error: #EF4444;
+            --success: #10B981;
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --ring: rgba(79, 70, 229, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            background-color: var(--surface);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+        }
+
+        .prn-header {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: var(--background);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: var(--surface);
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:hover,
+        select:hover {
+            border-color: #d1d5db;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--ring);
+        }
+
+        /* Validation Styles */
+        input.is-invalid,
+        select.is-invalid {
+            border-color: var(--error);
+        }
+
+        input.is-invalid:focus,
+        select.is-invalid:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+        }
+
+        input.is-valid,
+        select.is-valid {
+            border-color: var(--success);
+        }
+
+        input.is-valid:focus,
+        select.is-valid:focus {
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            display: none;
+            font-weight: 400;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .is-invalid~.error-message {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="prn-header">PRN:24070521224</div>
+
+        <div class="header">
+            <h1>Join the Club</h1>
+            <p>Start your fitness journey today.</p>
+        </div>
+
+        <div class="success-message" id="successMsg">
+            Application submitted successfully!
+        </div>
+
+        <form id="admissionForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName">
+                <div class="error-message">Name must be at least 3 characters long.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email">
+                <div class="error-message">Please enter a valid email address.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone">
+                <div class="error-message">Please enter a valid 10-digit phone number.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age">
+                <div class="error-message">Age must be between 16 and 100.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="plan">Membership Plan</label>
+                <select id="plan">
+                    <option value="" disabled selected>Select a plan...</option>
+                    <option value="basic">Basic (1 Month)</option>
+                    <option value="pro">Pro (3 Months)</option>
+                    <option value="elite">Elite (12 Months)</option>
+                </select>
+                <div class="error-message">Please select a membership plan.</div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('admissionForm');
+        const inputs = {
+            fullName: document.getElementById('fullName'),
+            email: document.getElementById('email'),
+            phone: document.getElementById('phone'),
+            age: document.getElementById('age'),
+            plan: document.getElementById('plan')
+        };
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('successMsg');
+
+        // Validation Rules
+        const validators = {
+            fullName: (value) => value.trim().length >= 3,
+            email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            phone: (value) => /^\d{10}$/.test(value.replace(/\D/g, '')), // Ensures exactly 10 digits when ignoring non-digits
+            age: (value) => {
+                const num = parseInt(value);
+                return !isNaN(num) && num >= 16 && num <= 100;
+            },
+            plan: (value) => value !== ""
+        };
+
+        function validateField(fieldName) {
+            const input = inputs[fieldName];
+            const isValid = validators[fieldName](input.value);
+
+            if (input.value.trim() === '' && fieldName !== 'plan') {
+                input.classList.remove('is-valid', 'is-invalid');
+                return false;
+            }
+
+            if (isValid) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            }
+
+            return isValid;
+        }
+
+        // Live Validation Events
+        for (const field in inputs) {
+            inputs[field].addEventListener('input', () => {
+                // Wait for blur to show first error, then validate live
+                if (inputs[field].classList.contains('is-invalid') || inputs[field].classList.contains('is-valid')) {
+                    validateField(field);
+                }
+            });
+
+            inputs[field].addEventListener('blur', () => {
+                validateField(field);
+            });
+
+            if (field === 'plan') {
+                inputs[field].addEventListener('change', () => {
+                    validateField(field);
+                });
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let isFormValid = true;
+
+            // Validate all fields on submit
+            for (const field in inputs) {
+                const isValid = validateField(field);
+                if (!isValid) {
+                    inputs[field].classList.add('is-invalid');
+                    isFormValid = false;
+                }
+            }
+
+            if (isFormValid) {
+                // Form is valid!
+                successMsg.style.display = 'block';
+                form.reset();
+
+                // Clear validation states
+                for (const field in inputs) {
+                    inputs[field].classList.remove('is-valid', 'is-invalid');
+                }
+
+                // Hide success message after 4 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+
+</html>

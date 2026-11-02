@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        :root {
+            --fg: #111111;
+            --bg: #f9f9f9;
+            --border: #111111;
+            --error: #111111;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--border);
+            padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .prn {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: sans-serif;
+            background: var(--fg);
+            color: var(--bg);
+            padding: 4px 10px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .required::after {
+            content: "*";
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            box-shadow: 6px 6px 0px var(--border);
+            transform: translate(-2px, -2px);
+        }
+
+        .date-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .date-row select {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 32px;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--fg);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            text-transform: none;
+            font-weight: normal;
+            font-family: sans-serif;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--fg);
+            color: var(--bg);
+            border: 2px solid var(--fg);
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--bg);
+            color: var(--fg);
+            box-shadow: 6px 6px 0px var(--border);
+            transform: translate(-2px, -2px);
+        }
+
+        button:active {
+            box-shadow: 0px 0px 0px var(--border);
+            transform: translate(0px, 0px);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        }
+        
+        .error-message.active {
+            display: block;
+        }
+        
+        .input-error {
+            background: #e5e5e5 !important;
+            border-style: dashed !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Register</h1>
+        <div class="prn">PRN:24070521224</div>
+    </div>
+
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="firstname" class="required">Firstname</label>
+            <input type="text" id="firstname" name="firstname">
+            <div class="error-message" id="err-firstname">Required field</div>
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Lastname</label>
+            <input type="text" id="lastname" name="lastname">
+        </div>
+
+        <div class="form-group">
+            <label class="required">Birthday</label>
+            <div class="date-row">
+                <select id="day"><option value="">DD</option></select>
+                <select id="month"><option value="">MM</option></select>
+                <select id="year"><option value="">YYYY</option></select>
+            </div>
+            <div class="error-message" id="err-birthday">Incomplete date</div>
+        </div>
+
+        <div class="form-group">
+            <label for="username" class="required">Username</label>
+            <input type="text" id="username" name="username">
+            <div class="error-message" id="err-username">Required field</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="required">E-mail</label>
+            <input type="email" id="email" name="email">
+            <div class="error-message" id="err-email">Invalid email format</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website" class="required">Website</label>
+            <input type="url" id="website" name="website" placeholder="https://">
+            <div class="error-message" id="err-website">Invalid URL</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="required">Password</label>
+            <input type="password" id="password" name="password">
+            <div class="error-message" id="err-password">Required field</div>
+        </div>
+
+        <div class="form-group">
+            <label for="repassword" class="required">Re-password</label>
+            <input type="password" id="repassword" name="repassword">
+            <div class="error-message" id="err-repassword">Passwords do not match</div>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="terms" name="terms">
+            <label for="terms">I agree to the terms and conditions</label>
+        </div>
+        <div class="error-message" id="err-terms">Agreement required</div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    // Populate dates
+    const daySelect = document.getElementById('day');
+    for (let i = 1; i <= 31; i++) {
+        daySelect.add(new Option(i, i));
+    }
+
+    const monthSelect = document.getElementById('month');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    months.forEach((m, i) => monthSelect.add(new Option(m, i + 1)));
+
+    const yearSelect = document.getElementById('year');
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i >= 1950; i--) {
+        yearSelect.add(new Option(i, i));
+    }
+
+    // Validation
+    const form = document.getElementById('registrationForm');
+    
+    function toggleError(id, inputIds, show) {
+        const errEl = document.getElementById(id);
+        if (show) {
+            errEl.classList.add('active');
+            inputIds.forEach(inputId => {
+                const inputEl = document.getElementById(inputId);
+                if (inputEl) inputEl.classList.add('input-error');
+            });
+        } else {
+            errEl.classList.remove('active');
+            inputIds.forEach(inputId => {
+                const inputEl = document.getElementById(inputId);
+                if (inputEl) inputEl.classList.remove('input-error');
+            });
+        }
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
+
+        const firstname = document.getElementById('firstname').value.trim();
+        if (!firstname) {
+            toggleError('err-firstname', ['firstname'], true);
+            isValid = false;
+        } else toggleError('err-firstname', ['firstname'], false);
+
+        const day = document.getElementById('day').value;
+        const month = document.getElementById('month').value;
+        const year = document.getElementById('year').value;
+        if (!day || !month || !year) {
+            toggleError('err-birthday', ['day', 'month', 'year'], true);
+            isValid = false;
+        } else toggleError('err-birthday', ['day', 'month', 'year'], false);
+
+        const username = document.getElementById('username').value.trim();
+        if (!username) {
+            toggleError('err-username', ['username'], true);
+            isValid = false;
+        } else toggleError('err-username', ['username'], false);
+
+        const email = document.getElementById('email').value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            toggleError('err-email', ['email'], true);
+            isValid = false;
+        } else toggleError('err-email', ['email'], false);
+
+        const website = document.getElementById('website').value.trim();
+        if (!/^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/.*)?$/i.test(website)) {
+            toggleError('err-website', ['website'], true);
+            isValid = false;
+        } else toggleError('err-website', ['website'], false);
+
+        const password = document.getElementById('password').value;
+        if (!password) {
+            toggleError('err-password', ['password'], true);
+            isValid = false;
+        } else toggleError('err-password', ['password'], false);
+
+        const repassword = document.getElementById('repassword').value;
+        if (password !== repassword || !repassword) {
+            toggleError('err-repassword', ['repassword'], true);
+            isValid = false;
+        } else toggleError('err-repassword', ['repassword'], false);
+
+        const terms = document.getElementById('terms').checked;
+        if (!terms) {
+            toggleError('err-terms', [], true);
+            isValid = false;
+        } else toggleError('err-terms', [], false);
+
+        if (isValid) {
+            alert('Form submitted successfully!');
+            form.reset();
+        }
+    });
+</script>
+</body>
+</html>

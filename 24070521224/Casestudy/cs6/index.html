@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Operations Case Study</title>
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --surface-color: #ffffff;
+            --primary-text: #1f2937;
+            --secondary-text: #4b5563;
+            --accent-color: #3b82f6;
+            --border-color: #e5e7eb;
+            --radius: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-text);
+        }
+
+        .prn {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--secondary-text);
+            background-color: #f3f4f6;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius);
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--primary-text);
+        }
+
+        .demo-section {
+            margin-bottom: 1rem;
+        }
+
+        .demo-section label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        .result-box {
+            background-color: #f8fafc;
+            border-left: 3px solid var(--accent-color);
+            padding: 0.8rem 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            white-space: pre-wrap;
+            border-radius: 0 4px 4px 0;
+            min-height: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>String Operations </h1>
+            <div class="prn">PRN:24070521224</div>
+        </div>
+
+        <div class="card">
+            <h2>String Operations & Vowel Counter</h2>
+
+            <div class="demo-section">
+                <label for="reverseInput">1. Reverse a String</label>
+                <input type="text" id="reverseInput" value="JavaScript is awesome"
+                    placeholder="Enter a string to reverse">
+                <button onclick="reverseString()">Reverse String</button>
+                <div id="reverseResult" class="result-box">Result will appear here...</div>
+            </div>
+
+            <div class="demo-section" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+                <label for="paragraphInput">2. Count Vowels in a Paragraph</label>
+                <textarea id="paragraphInput"
+                    placeholder="Enter a paragraph to count its vowels...">The quick brown fox jumps over the lazy dog. Programming is a fun challenge!</textarea>
+                <button onclick="countVowels()">Count Vowels</button>
+                <div id="vowelResult" class="result-box">Result will appear here...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function reverseString() {
+            const str = document.getElementById('reverseInput').value;
+            const reversed = str.split('').reverse().join('');
+            document.getElementById('reverseResult').textContent = `Reversed: ${reversed}`;
+        }
+
+        function countVowels() {
+            const paragraph = document.getElementById('paragraphInput').value;
+            let count = 0;
+            const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+
+            for (let i = 0; i < paragraph.length; i++) {
+                if (vowels.includes(paragraph[i])) {
+                    count++;
+                }
+            }
+
+            document.getElementById('vowelResult').textContent = `Total Vowels: ${count}`;
+        }
+    </script>
+</body>
+
+</html>
